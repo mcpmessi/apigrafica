@@ -25,7 +25,8 @@ public class Bresenham {
     
     public void calcule(int x1, int y1, int x2, int y2) {
         int slope;
-        int dx, dy, incE, incNE, d, x, y;     
+        int dx, dy, incE, incNE, d, x, y;
+        
         if (x1 > x2) {
             calcule(x2, y2, x1, y1);
             return;
