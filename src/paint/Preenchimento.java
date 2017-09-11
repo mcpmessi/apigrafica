@@ -1,4 +1,7 @@
-
+/*
+* MESSIAS PINHEIRO
+* CLEBER RODRIGUES
+*/
 package paint;
 
 import java.awt.Color;

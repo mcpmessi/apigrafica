@@ -1,14 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* API GRÁFICA
+* ============================
+* MESSIAS PINHEIRO
+* CLEBER RODRIGUES
+*/
+
 package view;
 
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.regex.Pattern;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -261,14 +260,13 @@ public class Home extends javax.swing.JFrame {
     private boolean retaValidator() {
         Pattern p = Pattern.compile("[0-9],[0-9]");
         if (!p.matcher(p_inicial.getText()).find()) {
-            alertMsg("Preenchimento incorreto", "Erro de preenchimento");
+            alertMsg("Preenchimento incorreto (x1, y1)", "Erro de preenchimento");
             return false;
         }
         if (!p.matcher(p_final.getText()).find()) {
-            alertMsg("Valor incorreto em Y1", "Erro de preenchimento");
+            alertMsg("Valor incorreto em (x2, y2)", "Erro de preenchimento");
             return false;
         }
-
         return true;
     }
 

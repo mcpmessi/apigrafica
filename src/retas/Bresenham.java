@@ -1,13 +1,13 @@
 /*
  * Calculo de reta com bresenham
- */
+* MESSIAS PINHEIRO
+* CLEBER RODRIGUES
+*/
 package retas;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
-import retas.FrameBuffer;
-import retas.MinMaxReta;
 
 /**
  * @author MESSI-PC
