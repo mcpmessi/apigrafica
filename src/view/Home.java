@@ -5,8 +5,16 @@
  */
 package view;
 
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.regex.Pattern;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import paint.AreaPintura;
 import retas.DesenhaReta;
 import retas.MinMaxReta;
 
@@ -45,6 +53,8 @@ public class Home extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jLabel2 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
+        pikerColorPaint = new javax.swing.JColorChooser();
+        btn_pintar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Computação gráfica");
@@ -70,28 +80,43 @@ public class Home extends javax.swing.JFrame {
 
         jLabel2.setText("PREENCHIMENTO");
 
+        btn_pintar.setBackground(new java.awt.Color(255, 102, 0));
+        btn_pintar.setText("Desenhar");
+        btn_pintar.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        btn_pintar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_clickPintar(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jSeparator2)
+            .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(p_inicial, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(p_final, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_line, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(p_inicial, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(p_final, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btn_line, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(pikerColorPaint, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(btn_pintar, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,7 +136,11 @@ public class Home extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(210, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(pikerColorPaint, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addComponent(btn_pintar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jLabel1.getAccessibleContext().setAccessibleName("jLabel1sds");
@@ -119,7 +148,7 @@ public class Home extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void btn_lineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_lineActionPerformed
 
         if (retaValidator()) {
@@ -156,6 +185,78 @@ public class Home extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btn_lineActionPerformed
+
+    JPanel janelaPintura = new javax.swing.JPanel();
+    JButton recorteButton = new javax.swing.JButton();
+    JButton clearButton = new javax.swing.JButton();
+    AreaPintura areapintura;
+        
+    private void btn_clickPintar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clickPintar
+
+        JFrame janela = new JFrame();
+
+        areapintura = new AreaPintura(500, 500, pikerColorPaint.getColor());
+        janela.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        recorteButton.setText("RECORTAR");
+        
+        recorteButton.addActionListener((ActionEvent e) -> {
+            areapintura.cortar();
+        });
+        
+        clearButton.setText("LIMPAR");
+        
+        clearButton.addActionListener((ActionEvent e) -> {
+            areapintura.limprar();
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(janelaPintura);
+        janelaPintura.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addComponent(recorteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                                .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(22, 22, 22))
+        );
+        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(recorteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(16, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(janela.getContentPane());
+        janela.getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(22, 22, 22)
+                                                .addComponent(janelaPintura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(areapintura, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(22, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(janelaPintura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(areapintura, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(48, Short.MAX_VALUE))
+        );
+
+        janela.pack();
+
+        janela.setVisible(true);
+
+
+    }//GEN-LAST:event_btn_clickPintar
 
     private boolean retaValidator() {
         Pattern p = Pattern.compile("[0-9],[0-9]");
@@ -210,6 +311,7 @@ public class Home extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_line;
+    private javax.swing.JButton btn_pintar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;
@@ -217,5 +319,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTextField p_final;
     private javax.swing.JTextField p_inicial;
+    private javax.swing.JColorChooser pikerColorPaint;
     // End of variables declaration//GEN-END:variables
 }

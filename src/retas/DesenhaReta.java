@@ -75,7 +75,7 @@ public class DesenhaReta extends JDialog {
         this.rows = rows;
         this.columns = columns;
        
-        coordinates = new bresenham.Bresenham().getArrayBuffer(p);
+        coordinates = new retas.Bresenham().getArrayBuffer(p);
         //
         construct();
     }
