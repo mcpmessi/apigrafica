@@ -4,6 +4,7 @@
 */
 package paint;
 
+import bresenham.Bresenham;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -60,8 +61,9 @@ public class AreaPintura extends Canvas implements MouseListener, MouseMotionLis
         }
         
         if (isDrawing) {
-            Bresenham b = new Bresenham(g, fbuffer.getFrameBuffer(), corPincel);
-            fbuffer.setFrameBuffer(b.setReta(new Point(x1, y1), new Point(x2, y2)));
+            Bresenham b = new Bresenham();
+            b.drawRectConfig(g, fbuffer.getFrameBuffer(), corPincel);
+            fbuffer.setFrameBuffer(b.drawRect(new Point(x1, y1), new Point(x2, y2)));
         }
 
         if (complete) {

@@ -33,7 +33,8 @@ public class Preenchimento {
                 init(x, y - 1, corPincel, corPreencher);
             }
         } catch (StackOverflowError ex) {
-            System.err.println("..");
+            
+            System.err.println("::.STACK.::"+ex.getMessage());
         }
 
     }

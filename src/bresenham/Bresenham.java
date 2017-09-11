@@ -3,23 +3,42 @@
 * MESSIAS PINHEIRO
 * CLEBER RODRIGUES
 */
-package retas;
+package bresenham;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
+import retas.FrameBuffer;
+import retas.MinMaxReta;
 
 /**
  * @author MESSI-PC
  */
 public class Bresenham {
     private ArrayList<FrameBuffer> pontos;
-    public ArrayList<FrameBuffer> getArrayBuffer(MinMaxReta p){
+    
+    //Para recorte e preenchimento
+    private Graphics graphic;
+    private final int pixelSize = 1;
+    private Color corPincel;
+    private Color[][] FrameBuffer;
+    
+    
+    public ArrayList<retas.FrameBuffer> getArrayBuffer(MinMaxReta p){
         pontos = new ArrayList<>();
-        calcule(p.getX1(), p.getY1(), p.getX2(), p.getY2());
+        Bresenham.this.drawRect(p.getX1(), p.getY1(), p.getX2(), p.getY2());
         return pontos;
     }
-    public void calcule(int x1, int y1, int x2, int y2) {
+    /**
+     * Desenho de RETA com bresenham
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     */
+    public void drawRect(int x1, int y1, int x2, int y2) {
         //Calculo delta X
         int deltax = Math.abs(x2 - x1);
         //Calculo delta y
@@ -92,5 +111,66 @@ public class Bresenham {
             }
             erro = erro + 2 * deltay;
         }
+    }
+    
+    
+    
+
+    /**
+     * Chamar antes de desenhar
+     * @param g
+     * @param fbuffer
+     * @param color
+     */
+    public void drawRectConfig(Graphics g, Color[][] fbuffer, Color color) {
+        graphic = g;
+        FrameBuffer = fbuffer;
+        corPincel = color;
+    }
+    /**
+     * Desenho à mão-livre com bresenham
+     * @param pInicial
+     * @param pFinal
+     * @return FrameBuffer
+     */
+    public Color[][] drawRect(Point pInicial, Point pFinal) {
+
+        int x1 = (int) pInicial.getX();
+        int y1 = (int) pInicial.getY();
+        int x2 = (int) pFinal.getX();
+        int y2 = (int) pFinal.getY();
+
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+        int abs = dx - dy;
+
+        int px, py;
+
+        px = (x1 < x2) ? 1 : -1;
+        py = (y1 < y2) ? 1 : -1;
+
+        while ((y1 != y2) || (x1 != x2)) {
+            int p = 2 * abs;
+
+            if (p > -dy) {
+                abs = abs - dy;
+                x1 = x1 + px;
+            }
+            if (p < dx) {
+                abs = abs + dx;
+                y1 = y1 + py;
+            }
+            //preencher o framebuffer e pintar
+            try {
+                FrameBuffer[x1][y1] = corPincel;
+                System.err.println("(" + x1 + "," + y1 + ")>>");
+            } catch (Exception ex) {
+                System.err.println("Ultrapassou o canvas");
+                return FrameBuffer;
+            }
+            graphic.drawRect(x1, y1, pixelSize, pixelSize);
+        }
+
+        return FrameBuffer;
     }
 }
