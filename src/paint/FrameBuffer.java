@@ -6,10 +6,10 @@ import java.awt.Graphics;
 
 public class FrameBuffer {
 
-    private boolean[][] memoryframeBuffer;
+    private boolean[][] memoryBuffer;
     private Color[][] frameBuffer;
-    private Dimension dimensaoBackground, tamanhoQuadro;
-    private Color corFundo, corQuadro;
+    private Dimension dimensaoBackground, frameSize;
+    private Color backGroundColor, fillColor;
 
     public FrameBuffer(Dimension dm, Color corFundo, Color corQuadro) {
         init(dm, corFundo, corQuadro);
@@ -27,33 +27,40 @@ public class FrameBuffer {
     }
 
     public void setMemoryframeBuffer(boolean[][] mFb) {
-        memoryframeBuffer = mFb;
+        memoryBuffer = mFb;
         for (int i = 0; i < getDimensionBkg().width; i++) {
             for (int j = 0; j < getDimensionBkg().height; j++) {
-                memoryframeBuffer[i][j] = false;
+                memoryBuffer[i][j] = false;
             }
         }
 
         for (int i = getTamanhoQuadro().width / 2; i < getTamanhoQuadro().width + getTamanhoQuadro().width / 2; i++) {
             for (int j = getTamanhoQuadro().height / 2; j < getTamanhoQuadro().height + getTamanhoQuadro().height / 2; j++) {
-                memoryframeBuffer[i][j] = true;
+                memoryBuffer[i][j] = true;
             }
         }
     }
 
     public boolean[][] getMemoryframeBuffer() {
-        return memoryframeBuffer;
+        return memoryBuffer;
     }
 
     public void recorte(Graphics g) {
+        int tqH, tqW, dmgW, dmgH;
+        dmgW = getDimensionBkg().width;
+        dmgH = getDimensionBkg().height;
+        tqH = getTamanhoQuadro().height;
+        
+        tqW = getTamanhoQuadro().width;
+        
         g.setColor(getCorFundo());
-        g.fillRect(0, 0, getDimensionBkg().width, getTamanhoQuadro().height / 2);
-        g.fillRect(0, getTamanhoQuadro().height + getTamanhoQuadro().height / 2, getDimensionBkg().width, getTamanhoQuadro().height / 2);
-        g.fillRect(0, 0, getTamanhoQuadro().width / 2, getDimensionBkg().height);
-        g.fillRect(getTamanhoQuadro().width + getTamanhoQuadro().width / 2, 0, getTamanhoQuadro().width / 2, getDimensionBkg().height);
+        g.fillRect(0, 0, dmgW, (tqH / 2));
+        g.fillRect(0, tqH + tqH / 2, dmgW, tqH / 2);
+        g.fillRect(0, 0, tqH / 2, dmgH);
+        g.fillRect(tqW + tqW / 2, 0, tqW / 2, dmgH);
 
-        for (int i = 0; i < getDimensionBkg().width; i++) {
-            for (int j = 0; j < getDimensionBkg().height; j++) {
+        for (int i = 0; i < dmgW; i++) {
+            for (int j = 0; j < dmgW; j++) {
                 if (getMemoryframeBuffer()[i][j] == false) {
                     getFrameBuffer()[i][j] = getCorFundo();
                 }
@@ -73,19 +80,19 @@ public class FrameBuffer {
     }
 
     public Color getCorQuadro() {
-        return corQuadro;
+        return fillColor;
     }
 
     public void setCorQuadro(Color corQuadro) {
-        this.corQuadro = corQuadro;
+        this.fillColor = corQuadro;
     }
 
     public Color getCorFundo() {
-        return corFundo;
+        return backGroundColor;
     }
 
     public void setCorFundo(Color corFundo) {
-        this.corFundo = corFundo;
+        this.backGroundColor = corFundo;
 
         for (int i = 0; i < getDimensionBkg().width; i++) {
             for (int j = 0; j < getDimensionBkg().height; j++) {
@@ -115,11 +122,11 @@ public class FrameBuffer {
     }
 
     public Dimension getTamanhoQuadro() {
-        return tamanhoQuadro;
+        return frameSize;
     }
 
     public void setTamanhoQuadro(Dimension dm) {
-        tamanhoQuadro = dm;
+        frameSize = dm;
     }
 
 }

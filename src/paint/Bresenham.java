@@ -5,15 +5,15 @@ import java.awt.*;
 
 public class Bresenham {
 
-    private int pixel = 1;
-    private Graphics gr;
-    private Color[][] FrameBuffer;
+    private Graphics graphic;
+    private int pixelSize = 1;
     private Color corPincel;
+    private Color[][] FrameBuffer;
 
-    public Bresenham(Graphics g, Color[][] fb, Color cor) {
-        gr = g;
-        FrameBuffer = fb;
-        corPincel = cor;
+    public Bresenham(Graphics g, Color[][] fbuffer, Color color) {
+        graphic = g;
+        FrameBuffer = fbuffer;
+        corPincel = color;
     }
 
     public Color[][] setReta(Point pInicial, Point pFinal) {
@@ -32,7 +32,7 @@ public class Bresenham {
         px = (x1 < x2) ? 1 : -1;
         py = (y1 < y2) ? 1 : -1;
 
-        while ((x1 != x2) || (y1 != y2)) {
+        while ((y1 != y2) || (x1 != x2)) {
             int p = 2 * abs;
 
             if (p > -dy) {
@@ -52,7 +52,7 @@ public class Bresenham {
                 return FrameBuffer;
             }
 
-            gr.drawRect(x1, y1, pixel, pixel);
+            graphic.drawRect(x1, y1, pixelSize, pixelSize);
 
         }
 

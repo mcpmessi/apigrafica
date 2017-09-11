@@ -14,18 +14,20 @@ import java.awt.event.MouseMotionListener;
 
 public class AreaPintura extends Canvas implements MouseListener, MouseMotionListener, KeyListener {
 
-    private int x1 = -1, y1 = -1, x2 = -1, y2 = -1;
+    
 
-    private boolean limpar = false;
-    private boolean preencher = false;
-    private boolean recortar = false;
+    private boolean clear = false;
+    private boolean complete = false;
+    private boolean clipping = false;
     private boolean pintar = true;
-    private FrameBuffer fb;
+    private FrameBuffer fbuffer;
     private Color corLateral;
     private Color corPincel;
     private Color corPreenchimento;
     private Color corQuadro;
     
+    private int x1 = -1, y1 = -1, x2 = -1, y2 = -1;
+   
     private Boolean isDrawing = false;
     
 
@@ -39,7 +41,7 @@ public class AreaPintura extends Canvas implements MouseListener, MouseMotionLis
         corQuadro = Color.WHITE;
         this.corPreenchimento = Color.GREEN;
         
-        fb = new FrameBuffer(new Dimension(largura, altura), corLateral, corQuadro); 
+        fbuffer = new FrameBuffer(new Dimension(largura, altura), corLateral, corQuadro); 
          
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -50,40 +52,40 @@ public class AreaPintura extends Canvas implements MouseListener, MouseMotionLis
         g.setColor(corPincel);
 
         if (pintar) {
-            fb.criarQuadroDePintura(g);
+            fbuffer.criarQuadroDePintura(g);
             pintar = false;
         }
         
         if (isDrawing) {
-            Bresenham b = new Bresenham(g, fb.getFrameBuffer(), corPincel);
-            fb.setFrameBuffer(b.setReta(new Point(x1, y1), new Point(x2, y2)));
+            Bresenham b = new Bresenham(g, fbuffer.getFrameBuffer(), corPincel);
+            fbuffer.setFrameBuffer(b.setReta(new Point(x1, y1), new Point(x2, y2)));
         }
 
-        if (preencher) {
-            new Preenchimento(x1, y1, corPincel, corPreenchimento, fb, g);
-            preencher = false;
+        if (complete) {
+            new Preenchimento(x1, y1, corPincel, corPreenchimento, fbuffer, g);
+            complete = false;
         }
 
-        if (recortar) {
-            fb.recorte(g);
-            recortar = false;
+        if (clipping) {
+            fbuffer.recorte(g);
+            clipping = false;
         }
 
-        if (limpar) {
-            fb.setCorFundo(fb.getCorFundo());
-            fb.criarQuadroDePintura(g);
-            limpar = false;
+        if (clear) {
+            fbuffer.setCorFundo(fbuffer.getCorFundo());
+            fbuffer.criarQuadroDePintura(g);
+            clear = false;
         }
     }
 
     public void cortar() {
-        recortar = true;
+        clipping = true;
         paint(this.getGraphics());
     }
 
     public void limprar() {
         cortar();
-        limpar = true;
+        clear = true;
         paint(this.getGraphics());
     }
 
@@ -91,7 +93,7 @@ public class AreaPintura extends Canvas implements MouseListener, MouseMotionLis
     public void mouseClicked(MouseEvent e) {
         x1 = e.getX();
         y1 = e.getY();
-        preencher = true;
+        complete = true;
         paint(this.getGraphics());
     }
 
